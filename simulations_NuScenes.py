@@ -50,9 +50,6 @@ for seed in range(5):
 							'beta_noise': 0.0,
 							'gamma_noise': 0.0,
 							'alpha': 10,
-							's_min': 0.8,
-							's_max': 1.2,
-							'sigma': 0.5, 
                         				'scale_NF': False,
 							'lr_decay': 0.98,
 							'seed': seed}})
