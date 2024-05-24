@@ -41,7 +41,6 @@ Models.append({'model': 'flomo_schoeller',
 						's_min': 0.3,
 						's_max': 1.7,
 						'sigma': 0.5,
-                        'scale_NF': True,
 						'seed': 42}})
 						
 Models.append({'model': 'flomo_schoeller',
@@ -53,6 +52,7 @@ Models.append({'model': 'flomo_schoeller',
 						's_min': 0.8,
 						's_max': 1.2,
 						'sigma': 0.5,
+                        			'scale_NF': False,
 						'lr_decay': 0.98,
 						'seed': 42}})
 
