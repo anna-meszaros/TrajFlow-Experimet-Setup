@@ -59,7 +59,6 @@ Models.append({'model': 'mid_gu'})
 Models.append({'model': 'pecnet_mangalam'})
 
 # Select the metrics to be used
-# Metrics = ['minADE20_indep', 'minADE20_indepExtrap', 'minFDE20_indep', 'KDE_NLL_indep', 'KDE_NLL_joint', 'ECE_class', 'AUC_ROC']
 Metrics = ['minADE20_indep', 'minADE20_indepExtrap', 'minFDE20_indep', 'KDE_NLL_indep', 'KDE_NLL_joint']
 
 
@@ -110,51 +109,51 @@ new_experiment.plot_paths(load_all = True, plot_similar_futures = True, plot_tra
                           only_show_pred_agents = False, likelihood_visualization = True, plot_only_lines = False)
 
 
-# # Load results
-# Results = new_experiment.load_results(plot_if_possible = False)
-# import numpy as np
-# import pandas as pd
-# import scipy as sp
-# np.set_printoptions(precision=3, suppress=True, linewidth=300)
-# R = Results.squeeze()
-# print(R)
+# Load results
+Results = new_experiment.load_results(plot_if_possible = False)
+import numpy as np
+import pandas as pd
+import scipy as sp
+np.set_printoptions(precision=3, suppress=True, linewidth=300)
+R = Results.squeeze()
+print(R)
 
-# Take mean over seeds
-# M = pd.DataFrame([pd.Series(np.array([m['model']] + list(m['kwargs'].values())), index =(['model'] + list(m['kwargs'].keys()))) for m in Models])
-# M = M[['model', 'decoder_type', 'beta_noise']]
+Take mean over seeds
+M = pd.DataFrame([pd.Series(np.array([m['model']] + list(m['kwargs'].values())), index =(['model'] + list(m['kwargs'].keys()))) for m in Models])
+M = M[['model', 'decoder_type', 'beta_noise']]
 
-# # Calculate statistic significance (using paired t-test due to correlation between splits)
-# T, P = sp.stats.ttest_1samp(R[:,np.newaxis] - R[:,:,np.newaxis], 0, axis=0, 
-#                             nan_policy='omit', alternative='greater')
-# print('Statistic significance')
-# print(T.shape)
+# Calculate statistic significance (using paired t-test due to correlation between splits)
+T, P = sp.stats.ttest_1samp(R[:,np.newaxis] - R[:,:,np.newaxis], 0, axis=0, 
+                            nan_policy='omit', alternative='greater')
+print('Statistic significance')
+print(T.shape)
 
  
-# # Take mean over splits
-# RA = np.nanmean(R, axis=0)
-# Std = np.nanstd(R, axis=0)
+# Take mean over splits
+RA = np.nanmean(R, axis=0)
+Std = np.nanstd(R, axis=0)
 
-# useless = np.isnan(RA).all(1)
-# RA = RA[~useless]
-# M  = M.iloc[~useless]
-# Std = Std[~useless]
+useless = np.isnan(RA).all(1)
+RA = RA[~useless]
+M  = M.iloc[~useless]
+Std = Std[~useless]
 
-# print('Correlation between metrics')
-# corr = np.corrcoef(RA, rowvar=False)
-# print(corr)
-# M_std = M.copy()
-# M['minADE20']       = RA[:, 0]
-# M['minADE20Extrap'] = RA[:, 1]
-# M['minFDE20']       = RA[:, 2]
-# M['KDE_NLL_indep']  = RA[:, 3]
-# M['KDE_NLL_joint']  = RA[:, 4]
+print('Correlation between metrics')
+corr = np.corrcoef(RA, rowvar=False)
+print(corr)
+M_std = M.copy()
+M['minADE20']       = RA[:, 0]
+M['minADE20Extrap'] = RA[:, 1]
+M['minFDE20']       = RA[:, 2]
+M['KDE_NLL_indep']  = RA[:, 3]
+M['KDE_NLL_joint']  = RA[:, 4]
 
-# M.to_excel("RounD.xlsx")
+M.to_excel("RounD.xlsx")
 
-# M_std['minADE20'] = Std[:, 0]
-# M_std['minADE20Extrap'] = Std[:, 1]
-# M_std['minFDE20'] = Std[:, 2]
-# M_std['KDE_NLL_indep'] = Std[:, 3]
-# M_std['KDE_NLL_joint'] = Std[:, 4]
+M_std['minADE20'] = Std[:, 0]
+M_std['minADE20Extrap'] = Std[:, 1]
+M_std['minFDE20'] = Std[:, 2]
+M_std['KDE_NLL_indep'] = Std[:, 3]
+M_std['KDE_NLL_joint'] = Std[:, 4]
  
-# M_std.to_excel("RounD_std.xlsx")
+M_std.to_excel("RounD_std.xlsx")
