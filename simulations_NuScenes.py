@@ -110,55 +110,55 @@ new_experiment.plot_paths(load_all = True, plot_similar_futures = True, plot_tra
 
 
 #%% Run experiment
-# new_experiment.run() 
+new_experiment.run() 
 
-# # Load results
-# Results = new_experiment.load_results(plot_if_possible = False)
-# import numpy as np
-# import pandas as pd
-# import scipy as sp
-# np.set_printoptions(precision=3, suppress=True, linewidth=300)
-# R = Results.squeeze()
+# Load results
+Results = new_experiment.load_results(plot_if_possible = False)
+import numpy as np
+import pandas as pd
+import scipy as sp
+np.set_printoptions(precision=3, suppress=True, linewidth=300)
+R = Results.squeeze()
 
-# # Take mean over seeds
-# M = pd.DataFrame([pd.Series(np.array([m['model']] + list(m['kwargs'].values())), index =(['model'] + list(m['kwargs'].keys()))) for m in Models])
-# M = M.iloc[(M.seed == '0').to_numpy()]
-# M = M[['model', 'decoder_type', 'beta_noise']]
-
-
-# # Separate by seeds
-# R = R.reshape(5, -1, len(Metrics))
-
-# # Calculate statistic significance (using paired t-test due to correlation between splits)
-# T, P = sp.stats.ttest_1samp(R[:,np.newaxis] - R[:,:,np.newaxis], 0, axis=0, 
-#                             nan_policy='omit', alternative='greater')
-# print('Statistic significance')
-# print(T.shape)
+# Take mean over seeds
+M = pd.DataFrame([pd.Series(np.array([m['model']] + list(m['kwargs'].values())), index =(['model'] + list(m['kwargs'].keys()))) for m in Models])
+M = M.iloc[(M.seed == '0').to_numpy()]
+M = M[['model', 'decoder_type', 'beta_noise']]
 
 
-# # Take mean over seeds
-# Sa = np.nanstd(R, axis=0)
-# Ra = np.nanmean(R, axis=0)
+# Separate by seeds
+R = R.reshape(5, -1, len(Metrics))
+
+# Calculate statistic significance (using paired t-test due to correlation between splits)
+T, P = sp.stats.ttest_1samp(R[:,np.newaxis] - R[:,:,np.newaxis], 0, axis=0, 
+                            nan_policy='omit', alternative='greater')
+print('Statistic significance')
+print(T.shape)
+
+
+# Take mean over seeds
+Sa = np.nanstd(R, axis=0)
+Ra = np.nanmean(R, axis=0)
  
-# useless = np.isnan(Ra).all(1)
-# Ra = Ra[~useless]
-# M = M.iloc[~useless]
-# Sa = Sa[~useless]
+useless = np.isnan(Ra).all(1)
+Ra = Ra[~useless]
+M = M.iloc[~useless]
+Sa = Sa[~useless]
  
 
-# print('Correlation between metrics')
-# corr = np.corrcoef(Ra, rowvar=False)
-# print(corr)
-# M['minADE20']           = Ra[:, 0]
-# M['std(minADE20)']      = Sa[:,0]
-# M['minFDE20']           = Ra[:, 1]
-# M['std(minFDE20)']      = Sa[:,1]
-# M['KDE_NLL_indep']      = Ra[:, 2]
-# M['std(KDE_NLL_indep)'] = Sa[:,2]
-# M['KDE_NLL_joint']      = Ra[:, 3]
-# M['std(KDE_NLL_joint)'] = Sa[:,3]
+print('Correlation between metrics')
+corr = np.corrcoef(Ra, rowvar=False)
+print(corr)
+M['minADE20']           = Ra[:, 0]
+M['std(minADE20)']      = Sa[:,0]
+M['minFDE20']           = Ra[:, 1]
+M['std(minFDE20)']      = Sa[:,1]
+M['KDE_NLL_indep']      = Ra[:, 2]
+M['std(KDE_NLL_indep)'] = Sa[:,2]
+M['KDE_NLL_joint']      = Ra[:, 3]
+M['std(KDE_NLL_joint)'] = Sa[:,3]
 
-# num_samples = np.isfinite(R).sum(0).max(-1).T
-# M['num_samples'] = num_samples[~useless].tolist()
+num_samples = np.isfinite(R).sum(0).max(-1).T
+M['num_samples'] = num_samples[~useless].tolist()
 
-# M.to_excel("NuScenes.xlsx")
+M.to_excel("NuScenes.xlsx")
