@@ -42,7 +42,6 @@ for seed in range(10):
                                         's_min': 0.3,
                                         's_max': 1.7,
                                         'sigma': 0.5,
-                                        'scale_NF': True,
                                         'seed': seed}})
                             
     Models.append({'model': 'flomo_schoeller',
@@ -53,6 +52,7 @@ for seed in range(10):
                                         's_min': 0.8,
                                         's_max': 1.2,
                                         'sigma': 0.5,
+                                        'scale_NF': False,
                                         'lr_decay': 0.98,
                                         'seed': seed}})
 
