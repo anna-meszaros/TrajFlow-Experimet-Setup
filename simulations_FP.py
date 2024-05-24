@@ -22,8 +22,8 @@ for seed in [0, 1, 2, 3, 4]:
      for decoder_type in ['none']:
           Models.append({'model': 'trajflow_meszaros',
                                    'kwargs': {'fut_enc_sz': 20, 
-                                             'scene_encoding_size': 4,
                                              'obs_encoding_size': 64,
+                                             'scene_encoding_size': 4,
                                              'beta_noise': 0.0,
                                              'gamma_noise': 0.0,
                                              'alpha': 10,
@@ -50,9 +50,6 @@ for seed in [0, 1, 2, 3, 4]:
                                         'beta_noise': 0.0,
                                         'gamma_noise': 0.0,
                                         'alpha': 10,
-                                        's_min': 0.8,
-                                        's_max': 1.2,
-                                        'sigma': 0.5,
                                         'scale_NF': False,
                                         'lr_decay': 0.98,
                                         'seed': seed}})
